@@ -1,7 +1,8 @@
-const { Client } = require('pg');
-const { encode, decode } = require('gpt-3-encoder');
-const winston = require('winston');
-const pLimit = require('p-limit');
+import pg from 'pg';
+const { Client } = pg;
+import { encode, decode } from 'gpt-3-encoder';
+import winston from 'winston';
+import pLimit from 'p-limit';
 
 // Configure the logger
 const logger = winston.createLogger({
@@ -15,7 +16,7 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
-async function vectorize(config) {
+export async function vectorize(config) {
   const {
     connectionString,
     sourceTable,
@@ -23,17 +24,17 @@ async function vectorize(config) {
     embeddingTable,
     embeddingDimensions,
     embeddingFunction,
-    chunkSize = 800,     // default chunk size in tokens
-    chunkOverlap = 200,  // default overlap in tokens
-    maxConcurrentChunks = 5, // limit for concurrent chunk processing
-    maxRetries = 3,      // maximum number of retries for transient errors
+    chunkSize = 800,        // Default chunk size in tokens
+    chunkOverlap = 200,     // Default overlap in tokens
+    maxConcurrentChunks = 5, // Limit for concurrent chunk processing
+    maxRetries = 3,         // Maximum number of retries for transient errors
   } = config;
 
   const client = new Client({ connectionString });
   await client.connect();
 
   // Ensure pgvector extension is available
-  await client.query(`CREATE EXTENSION IF NOT EXISTS vector;`);
+  await client.query('CREATE EXTENSION IF NOT EXISTS vector;');
 
   // Set up the embedding table
   await client.query(`
@@ -66,7 +67,7 @@ async function vectorize(config) {
 
   client.on('notification', async (msg) => {
     try {
-      const textId = parseInt(msg.payload, 10);
+      const textId = Number.parseInt(msg.payload, 10);
       logger.info(`Received notification for text_id ${textId}`);
 
       const res = await client.query(
@@ -79,7 +80,7 @@ async function vectorize(config) {
         return;
       }
 
-      const content = res.rows[0][contentColumn];
+      const content = res.rows[0]?.[contentColumn];
 
       // Delete existing embeddings for this text_id
       await client.query(`DELETE FROM ${embeddingTable} WHERE text_id = $1`, [
@@ -92,7 +93,7 @@ async function vectorize(config) {
 
       const limit = pLimit(maxConcurrentChunks);
 
-      // For each chunk, generate embedding and store it with concurrency limit
+      // Process each chunk with concurrency limit
       await Promise.all(
         chunks.map((chunk, index) =>
           limit(async () => {
@@ -136,7 +137,7 @@ async function vectorize(config) {
 }
 
 // Helper function to chunk text
-function chunkText(text, maxTokens = 800, overlap = 200) {
+export function chunkText(text, maxTokens = 800, overlap = 200) {
   const tokens = encode(text);
   const chunks = [];
   let start = 0;
@@ -152,7 +153,7 @@ function chunkText(text, maxTokens = 800, overlap = 200) {
 }
 
 // Retry mechanism with exponential backoff
-async function retry(fn, retries) {
+export async function retry(fn, retries) {
   let attempt = 0;
   const maxDelay = 8000; // Max delay of 8 seconds
 
@@ -170,9 +171,3 @@ async function retry(fn, retries) {
   }
   throw new Error(`Failed after ${retries} retries.`);
 }
-
-module.exports = {
-    vectorize,
-    chunkText,
-    retry,
-};  
