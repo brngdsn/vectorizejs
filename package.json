@@ -1,0 +1,25 @@
+{
+    "name": "vectorizejs",
+    "version": "0.2.0",
+    "description": "Automatically generate and sync vector embeddings for PostgreSQL text data",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [
+        "pgvector",
+        "postgresql",
+        "embeddings",
+        "vector search",
+        "nodejs"
+    ],
+    "author": "brn.gdsn@gmail.com",
+    "license": "MIT",
+    "dependencies": {
+        "pg": "^8.11.0"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "jest-mock": "^29.7.0"
+    }
+}
