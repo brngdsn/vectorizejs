@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VectorizeJS - Automate Text Vectorization</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Roboto:300,400,500,700&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <style>
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: #f0f0f0;
+      background-color: #121212;
+      line-height: 1.6;
+    }
+    a {
+      color: #f7f7f7;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    pre {
+      background: #1e1e1e;
+      padding: 15px;
+      overflow-x: auto;
+      border-radius: 5px;
+    }
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background: #1e1e1e;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+
+    /* Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Header / Hero Section */
+    header {
+      background-image: url(./bg-1.webp);
+      background-size: cover;
+      height: 75vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 50px;
+      position: relative;
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+      box-shadow: #555555 0px -10px 500px inset;
+      border-bottom: 2px solid black;
+      border-top: 2px solid black;
+    }
+
+    /* Responsive Navigation */
+    nav {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      z-index: 1000; /* Ensure nav is above other elements */
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #f7f7f7;
+    }
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001; /* Ensure hamburger is above nav-links */
+    }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+      margin: 4px 0;
+      transition: all 0.3s ease;
+    }
+    /* Toggle Navigation */
+    .nav-active {
+      display: flex !important;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 40px;
+      background-color: rgba(18, 18, 18, 0.95);
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    /* Hero Content */
+    .hero-content {
+      max-width: 800px;
+      width: 100%;
+    }
+    .hero-content h1 {
+      font-size: 9.5em;
+      margin-bottom: 20px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .hero-content p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      color: #e0e0e0;
+    }
+    .cta-button {
+      margin-bottom: 30px;
+      padding: 15px 30px;
+      background-color: rgba(0,0,0,0.1);
+      color: #f7f7f7;
+      border: 2px solid #f7f7f7;
+      border-radius: 5px;
+      font-size: 1.7em;
+      font-weight: 600;
+      cursor: pointer;
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+      transition: background-color 0.3s, transform 0.3s, color 0.3s;
+    }
+    .cta-button:hover {
+      background-color: #f7f7f7;
+      color: #121212;
+      transform: translateY(-2px);
+    }
+    .badges img {
+      margin: 10px 5px;
+      height: 25px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Sections */
+    section {
+      padding: 60px 20px;
+      color: #f0f0f0;
+      box-shadow: #555555 0px -10px 500px inset;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 5.5em;
+    }
+
+    /* Alternating Gradient Backgrounds */
+    #features {
+      background: linear-gradient(135deg, #0b0b0b, #522300);
+      box-shadow: #0f002c 0px -10px 500px inset;
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+    }
+    #installation {
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+      background-image: url(./bg2.webp);
+      background-size: cover;
+    }
+    section > div.container {
+      max-width: 1200px;
+      width: 100%;
+      margin: auto;
+    }
+    section > div.container > p,
+    section > div.container > pre,
+    section > div.container > h3 {
+      margin-bottom: 10px;
+    }
+    #features > div.container {
+      width: 100%;
+      margin: 0;
+    }
+    #usage {
+      background: linear-gradient(135deg, #0e0002, #0e0500);
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+      box-shadow: #100000 0px -10px 500px inset;
+    }
+    #contributing {
+      background: linear-gradient(135deg, #2193b0, #6dd5ed);
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+    }
+    #license {
+      background: linear-gradient(135deg, #cc2b5e, #753a88);
+      text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .feature-tile {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      transition: transform 0.3s, background-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .feature-tile:hover {
+      transform: translateY(-5px);
+      background-color: #2a2a2a;
+    }
+    .feature-tile img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+      max-width: 100%;
+      height: auto;
+    }
+    .feature-tile h3 {
+      margin-bottom: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.5em;
+    }
+    .feature-tile p {
+      font-size: 1em;
+      color: #c0c0c0;
+    }
+
+    /* Footer */
+    footer {
+      background: #0d0d0d;
+      color: #888;
+      text-align: center;
+      padding: 20px 0;
+      background-image: url(./bg-1.webp);
+      background-size: cover;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1200px) {
+      .section-title {
+        font-size: 4.5em;
+      }
+    }
+
+    @media (max-width: 900px) {
+      header {
+        height: 70vh;
+        padding: 0 30px;
+      }
+      .hero-content h1 {
+        font-size: 7em;
+      }
+      .section-title {
+        font-size: 4em;
+      }
+    }
+
+    @media (max-width: 700px) {
+      /* Remove display: none from nav */
+      /* nav {
+        display: none;
+      } */
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+      }
+      .hamburger {
+        display: flex;
+        position: absolute;
+        top: 20px;
+        right: 40px;
+      }
+      .nav-active {
+        display: flex !important;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 40px;
+        background-color: rgba(18, 18, 18, 0.95);
+        padding: 20px;
+        border-radius: 5px;
+        width: 200px;
+      }
+      .hero-content h1 {
+        font-size: 2.5em;
+      }
+      .hero-content p {
+        font-size: 1em;
+      }
+      .section-title {
+        font-size: 3.5em;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .cta-button {
+        font-size: 1.5em;
+        padding: 12px 25px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      header {
+        height: 60vh;
+        padding: 0 20px;
+      }
+      .hero-content h1 {
+        font-size: 3em;
+      }
+      .hero-content p {
+        font-size: 0.9em;
+      }
+      .section-title {
+        font-size: 3em;
+      }
+      .cta-button {
+        font-size: 1.3em;
+        padding: 10px 20px;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      nav a {
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Hero Section -->
+  <header>
+    <nav>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#installation">Installation</a>
+        <a href="#usage">Usage</a>
+        <!-- <a href="#contributing">Contribute</a>
+        <a href="#license">License</a> -->
+      </div>
+    </nav>
+    <div class="hamburger" onclick="toggleNav()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="hero-content">
+      <h1>VectorizeJS</h1>
+      <p>Automate the vectorization of text data with ease. VectorizeJS listens for changes in your PostgreSQL database, generates embeddings, and stores them efficiently.</p>
+      <button class="cta-button" onclick="window.location.href='#installation'">Get Started</button>
+      <div class="badges">
+        <img src="https://img.shields.io/npm/v/vectorizejs.svg" alt="npm version">
+        <img src="https://img.shields.io/npm/l/vectorizejs.svg" alt="License">
+        <img src="https://img.shields.io/github/workflow/status/brngdsn/vectorizejs/Node.js%20CI.svg" alt="Node.js CI">
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features">
+    <div class="container">
+      <!-- <h2 class="section-title">Features</h2> -->
+      <div class="features-grid">
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/ios-filled/100/f7f7f7/automatic.png" alt="Automated Vectorization">
+          <h3>Automated Vectorization</h3>
+          <p>Automatically generates embeddings for new or updated text data in your PostgreSQL database.</p>
+        </div>
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/ios-filled/100/f7f7f7/split.png" alt="Token-Based Chunking">
+          <h3>Token-Based Chunking</h3>
+          <p>Splits large texts into manageable chunks based on token count, respecting model token limits.</p>
+        </div>
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/?size=100&id=113586&format=png&color=FFFFFF" alt="Asynchronous Processing">
+          <h3>Asynchronous Processing</h3>
+          <p>Processes chunks concurrently with configurable concurrency limits for optimal performance.</p>
+        </div>
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/ios-filled/100/f7f7f7/error.png" alt="Error Handling and Retries">
+          <h3>Error Handling & Retries</h3>
+          <p>Robust error handling with an exponential backoff retry mechanism for transient errors.</p>
+        </div>
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/?size=100&id=11735&format=png&color=FFFFFF" alt="Comprehensive Logging">
+          <h3>Comprehensive Logging</h3>
+          <p>Detailed logs using the <code>winston</code> library, aiding in monitoring and debugging.</p>
+        </div>
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/?size=100&id=30379&format=png&color=FFFFFF" alt="Resource Management">
+          <h3>Resource Management</h3>
+          <p>Concurrency control using <code>p-limit</code> to prevent resource exhaustion.</p>
+        </div>
+        <div class="feature-tile">
+          <img src="https://img.icons8.com/ios-filled/100/f7f7f7/shutdown.png" alt="Graceful Shutdown">
+          <h3>Graceful Shutdown</h3>
+          <p>Handles process termination signals to close database connections properly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Section -->
+  <section id="installation">
+    <div class="container">
+      <h2 class="section-title">Installation</h2>
+      <p>Install VectorizeJS and its peer dependencies using npm:</p>
+      <pre><code>npm install vectorizejs</code></pre>
+      <p>Install the required peer dependencies:</p>
+      <pre><code>npm install pg gpt-3-encoder winston p-limit</code></pre>
+    </div>
+  </section>
+
+  <!-- Usage Section -->
+  <section id="usage">
+    <div class="container">
+      <h2 class="section-title">Usage</h2>
+      <h3>1. Import the Module</h3>
+      <pre><code>const vectorize = require('vectorizejs');</code></pre>
+      <h3>2. Define Your Embedding Function</h3>
+      <p>Implement an asynchronous function that generates embeddings from text. This function can call external APIs like OpenAI's embedding API.</p>
+      <pre><code>const axios = require('axios');
+
+async function embeddingFunction(text) {
+  try {
+    const url = 'https://api.example.com/embed';
+    const response = await axios.post(url, { text });
+    return response.data.embedding;
+  } catch (error) {
+    throw error;
+  }
+}</code></pre>
+      <h3>3. Configure and Run VectorizeJS</h3>
+      <pre><code>vectorize({
+  connectionString: 'your_postgresql_connection_string',
+  sourceTable: 'your_source_table',
+  contentColumn: 'your_content_column',
+  embeddingTable: 'your_embedding_table',
+  embeddingDimensions: 1536, // Adjust based on your embedding model
+  embeddingFunction: embeddingFunction,
+  chunkSize: 800,            // Optional, default is 800 tokens
+  chunkOverlap: 200,         // Optional, default is 200 tokens
+  maxConcurrentChunks: 5,    // Optional, default is 5
+  maxRetries: 3,             // Optional, default is 3
+});</code></pre>
+    </div>
+  </section>
+
+  <!-- Contributing Section -->
+  <!-- <section id="contributing">
+    <div class="container">
+      <h2 class="section-title">Contribute</h2>
+      <p>Contributions are welcome! Please open an issue or submit a pull request on GitHub.</p>
+      <ol>
+        <li>Fork the repository.</li>
+        <li>Create your feature branch (<code>git checkout -b feature/YourFeature</code>).</li>
+        <li>Commit your changes (<code>git commit -am 'Add some feature'</code>).</li>
+        <li>Push to the branch (<code>git push origin feature/YourFeature</code>).</li>
+        <li>Open a pull request.</li>
+      </ol>
+    </div>
+  </section> -->
+
+  <!-- License Section -->
+  <!-- <section id="license">
+    <div class="container">
+      <h2 class="section-title">License</h2>
+      <p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+    </div>
+  </section> -->
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2023 VectorizeJS. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript for Hamburger Menu -->
+  <script>
+    function toggleNav() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('nav-active');
+    }
+
+    // Close the navigation when a link is clicked (optional)
+    const navLinksAll = document.querySelectorAll('.nav-links a');
+    navLinksAll.forEach(link => {
+      link.addEventListener('click', () => {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks.classList.contains('nav-active')) {
+          navLinks.classList.remove('nav-active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
