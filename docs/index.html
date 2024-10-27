@@ -16,8 +16,8 @@
     }
     body {
       font-family: 'Roboto', sans-serif;
-      color: #f0f0f0;
-      background-color: #121212;
+      color: #f7f7f7;
+      background-color: #0f0f0f;
       line-height: 1.6;
     }
     a {
@@ -47,8 +47,9 @@
 
     /* Header / Hero Section */
     header {
-      background-image: url(./bg-1.webp);
-      background-size: cover;
+      /*background-image: url(./bg-1.webp);
+      background-size: cover;*/
+      background: linear-gradient(135deg, #0f002c, #0b0b0b);
       height: 75vh;
       color: #fff;
       display: flex;
@@ -57,16 +58,16 @@
       padding: 0 50px;
       position: relative;
       text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
-      box-shadow: #555555 0px -10px 500px inset;
-      border-bottom: 2px solid black;
-      border-top: 2px solid black;
+      /* box-shadow: #555555 0px -10px 500px inset; */
+      /* border-bottom: 2px solid black; */
+      /* border-top: 2px solid black; */
     }
 
     /* Responsive Navigation */
     nav {
       position: absolute;
-      top: 20px;
-      right: 40px;
+      top: 15px;
+      right: 14px;
       display: flex;
       align-items: center;
       z-index: 1000; /* Ensure nav is above other elements */
@@ -104,8 +105,8 @@
       display: flex !important;
       flex-direction: column;
       position: absolute;
-      top: 60px;
-      right: 40px;
+      top: 0px;
+      right: 38px;
       background-color: rgba(18, 18, 18, 0.95);
       padding: 20px;
       border-radius: 5px;
@@ -118,12 +119,13 @@
     }
     .hero-content h1 {
       font-size: 9.5em;
-      margin-bottom: 20px;
+      /* margin-bottom: 20px; */
       font-family: 'Montserrat', sans-serif;
     }
     .hero-content p {
       font-size: 1.2em;
-      margin-bottom: 30px;
+      margin-bottom: 60px;
+
       color: #e0e0e0;
     }
     .cta-button {
@@ -154,8 +156,8 @@
     /* Sections */
     section {
       padding: 60px 20px;
-      color: #f0f0f0;
-      box-shadow: #555555 0px -10px 500px inset;
+      /* color: #f0f0f0; */
+      /* box-shadow: #555555 0px -10px 500px inset; */
     }
     .section-title {
       text-align: center;
@@ -166,14 +168,14 @@
 
     /* Alternating Gradient Backgrounds */
     #features {
-      background: linear-gradient(135deg, #0b0b0b, #522300);
-      box-shadow: #0f002c 0px -10px 500px inset;
+      background: linear-gradient(0deg, #0b0b0b, #232323);
+      /* box-shadow: #0f002c 0px -10px 500px inset; */
       text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
     }
     #installation {
-      background: linear-gradient(135deg, #43cea2, #185a9d);
+      background: linear-gradient(135deg, #002001, #0b0b0b);
       text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
-      background-image: url(./bg2.webp);
+      /* background-image: url(./bg2.webp); */
       background-size: cover;
     }
     section > div.container {
@@ -188,12 +190,12 @@
     }
     #features > div.container {
       width: 100%;
-      margin: 0;
+      margin: auto;
     }
     #usage {
-      background: linear-gradient(135deg, #0e0002, #0e0500);
+      background: linear-gradient(0deg, #0b0b0b, #000a1b);
       text-shadow: 2px 2px 0 black, -2px 2px 0 black, 2px -2px 0 black, -2px -2px 0 black;
-      box-shadow: #100000 0px -10px 500px inset;
+      /* box-shadow: #100000 0px -10px 500px inset; */
     }
     #contributing {
       background: linear-gradient(135deg, #2193b0, #6dd5ed);
@@ -213,6 +215,7 @@
       margin: auto;
     }
     .feature-tile {
+      box-shadow: #000000 0px 0px 100px inset;
       background-color: #1e1e1e;
       padding: 20px;
       border-radius: 10px;
@@ -245,11 +248,11 @@
 
     /* Footer */
     footer {
-      background: #0d0d0d;
+      background: linear-gradient(135deg, #0f002c, #0b0b0b);
       color: #888;
       text-align: center;
       padding: 20px 0;
-      background-image: url(./bg-1.webp);
+      /* background-image: url(./bg-1.webp); */
       background-size: cover;
     }
 
@@ -286,15 +289,15 @@
       .hamburger {
         display: flex;
         position: absolute;
-        top: 20px;
-        right: 40px;
+        top: 15px;
+        right: 14px;
       }
       .nav-active {
         display: flex !important;
         flex-direction: column;
         position: absolute;
-        top: 60px;
-        right: 40px;
+        top: 0px;
+        right: 38px;
         background-color: rgba(18, 18, 18, 0.95);
         padding: 20px;
         border-radius: 5px;
@@ -422,7 +425,15 @@
   <!-- Installation Section -->
   <section id="installation">
     <div class="container">
-      <h2 class="section-title">Installation</h2>
+      <h2 class="section-title" style="margin-bottom: -10px;">Installation</h2>
+      <h3 style="
+          font-color: red;
+          text-align: center;
+          margin-bottom: 50px;
+          font-size: 1.5em;
+          font-weight: 300;
+          color: #00ff04;
+      ">This package is published on NPM and is open-source with an MIT license.</h3>
       <p>Install VectorizeJS and its peer dependencies using npm:</p>
       <pre><code>npm install vectorizejs</code></pre>
       <p>Install the required peer dependencies:</p>
@@ -433,7 +444,15 @@
   <!-- Usage Section -->
   <section id="usage">
     <div class="container">
-      <h2 class="section-title">Usage</h2>
+      <h2 class="section-title" style="margin-bottom: -10px;">Usage</h2>
+      <h3 style="
+          font-color: red;
+          text-align: center;
+          margin-bottom: 50px;
+          font-size: 1.5em;
+          font-weight: 300;
+          color: #005fff;
+      ">Built for PostgreSQL, but designed to choose your own embedding algorithm.</h3>
       <h3>1. Import the Module</h3>
       <pre><code>const vectorize = require('vectorizejs');</code></pre>
       <h3>2. Define Your Embedding Function</h3>

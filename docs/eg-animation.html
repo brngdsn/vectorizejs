@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectorization & Tokenization Animation</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Hero Section Styling */
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            background-color: #1a1a2e;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Canvas Styling */
+        #animationCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Vectorization & Tokenization</h1>
+        <canvas id="animationCanvas"></canvas>
+    </div>
+
+    <script>
+        // Get canvas and context
+        const canvas = document.getElementById('animationCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas to full screen
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+
+        // Handle window resize
+        window.addEventListener('resize', resizeCanvas);
+
+        // Utility functions
+        function randomRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function getRandomColor() {
+            const colors = ['#f8b195', '#f67280', '#c06c84', '#6c5b7b', '#355c7d', '#99b898', '#feceab', '#ff847c', '#e84a5f', '#2a363b'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Shape (Token) Class
+        class Shape {
+            constructor(x, y, size, color, velocity) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.color = color;
+                this.vx = velocity.x;
+                this.vy = velocity.y;
+                this.opacity = 1;
+                this.splitTimer = randomRange(200, 500); // Frames before splitting
+                this.hasSplit = false;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= 0.001; // Fade out
+                this.splitTimer -= 1;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            shouldSplit() {
+                return this.splitTimer <= 0 && !this.hasSplit;
+            }
+
+            split() {
+                this.hasSplit = true;
+                const numChildren = Math.floor(randomRange(2, 4));
+                const children = [];
+                for (let i = 0; i < numChildren; i++) {
+                    const angle = randomRange(0, Math.PI * 2);
+                    const speed = randomRange(0.5, 2);
+                    const velocity = {
+                        x: Math.cos(angle) * speed,
+                        y: Math.sin(angle) * speed
+                    };
+                    const size = this.size * randomRange(0.5, 0.8);
+                    const color = getRandomColor();
+                    children.push(new Shape(this.x, this.y, size, color, velocity));
+                }
+                return children;
+            }
+
+            isDead() {
+                return this.opacity <= 0 || this.size <= 0;
+            }
+        }
+
+        // Vector Class
+        class Vector {
+            constructor(x, y, angle, length, color) {
+                this.x = x;
+                this.y = y;
+                this.angle = angle;
+                this.length = length;
+                this.color = color;
+                this.vx = Math.cos(this.angle) * 2;
+                this.vy = Math.sin(this.angle) * 2;
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= 0.002;
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                const endX = this.x + Math.cos(this.angle) * this.length;
+                const endY = this.y + Math.sin(this.angle) * this.length;
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            isDead() {
+                return this.opacity <= 0;
+            }
+        }
+
+        // Initialize variables
+        const shapes = [];
+        const vectors = [];
+        const initialShapeCount = 5;
+
+        // Create initial shapes
+        for (let i = 0; i < initialShapeCount; i++) {
+            const x = randomRange(100, canvas.width - 100);
+            const y = randomRange(100, canvas.height - 100);
+            const size = randomRange(10, 30);
+            const color = getRandomColor();
+            const angle = randomRange(0, Math.PI * 2);
+            const speed = randomRange(-1, 1);
+            const velocity = {
+                x: Math.cos(angle) * speed,
+                y: Math.sin(angle) * speed
+            };
+            shapes.push(new Shape(x, y, size, color, velocity));
+        }
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update and draw shapes
+            for (let i = shapes.length - 1; i >= 0; i--) {
+                const shape = shapes[i];
+                shape.update();
+                shape.draw(ctx);
+
+                if (shape.shouldSplit()) {
+                    const newShapes = shape.split();
+                    shapes.push(...newShapes);
+                    // Generate vectors from the split position
+                    generateVectors(shape.x, shape.y);
+                }
+
+                if (shape.isDead()) {
+                    shapes.splice(i, 1);
+                }
+            }
+
+            // Update and draw vectors
+            for (let i = vectors.length - 1; i >= 0; i--) {
+                const vector = vectors[i];
+                vector.update();
+                vector.draw(ctx);
+                if (vector.isDead()) {
+                    vectors.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Generate vectors from a point
+        function generateVectors(x, y) {
+            const numVectors = Math.floor(randomRange(3, 7));
+            for (let i = 0; i < numVectors; i++) {
+                const angle = randomRange(0, Math.PI * 2);
+                const length = randomRange(50, 150);
+                const color = getRandomColor();
+                vectors.push(new Vector(x, y, angle, length, color));
+            }
+        }
+
+        // Periodically add new shapes
+        setInterval(() => {
+            const x = randomRange(100, canvas.width - 100);
+            const y = randomRange(100, canvas.height - 100);
+            const size = randomRange(10, 30);
+            const color = getRandomColor();
+            const angle = randomRange(0, Math.PI * 2);
+            const speed = randomRange(-1, 1);
+            const velocity = {
+                x: Math.cos(angle) * speed,
+                y: Math.sin(angle) * speed
+            };
+            shapes.push(new Shape(x, y, size, color, velocity));
+        }, 3000); // Every 3 seconds
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>
