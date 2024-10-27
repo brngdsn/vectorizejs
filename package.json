@@ -1,6 +1,6 @@
 {
     "name": "vectorizejs",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "type": "module",
     "description": "Automatically generate and sync vector embeddings for PostgreSQL text data",
     "main": "src/index.js",
@@ -11,6 +11,11 @@
         "vector search",
         "nodejs"
     ],
+    "homepage": "https://brngdsn.github.io/vectorizejs",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/brngdsn/vectorizejs.git"
+    },
     "author": "brn.gdsn@gmail.com",
     "license": "MIT",
     "dependencies": {
