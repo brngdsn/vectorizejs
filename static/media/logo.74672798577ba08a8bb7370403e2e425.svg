@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="150" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(180 150 150)">
+    <!-- Neon V Shape (Blue) -->
+    <path d="M80 80 L150 220 L220 80" stroke="#F7F7F7" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Inner V Cutout (White) -->
+    <path d="M110 100 L150 200 L190 100" stroke="#f7f7f7" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Glow Effect -->
+    <defs>
+      <filter id="neonGlowEnhanced" x="-50%" y="-50%" width="200%" height="200%">
+        <!-- First Blur -->
+        <feGaussianBlur stdDeviation="8" result="blur1"/>
+        <!-- Second Blur -->
+        <feGaussianBlur in="blur1" stdDeviation="4" result="blur2"/>
+        <!-- Merge Blurs with Source Graphic -->
+        <feMerge>
+          <feMergeNode in="blur2"/>
+          <feMergeNode in="blur1"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Apply Enhanced Glow to Outer V (Blue) -->
+    <path d="M80 80 L150 220 L220 80" stroke="#F7F7F7" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlowEnhanced)" />
+
+    <!-- Apply Enhanced Glow to Inner V (White) -->
+    <path d="M110 100 L150 200 L190 100" stroke="#f7f7f7" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlowEnhanced)" />
+  </g>
+</svg>

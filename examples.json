@@ -1,0 +1,21 @@
+[
+    {
+      "link": "/examples/beginner-application",
+      "id": "beginner-example",
+      "name": "Simple Text Embedding with VectorizeJS",
+      "description": "A beginner-level application demonstrating how to use VectorizeJS with Ollama/LLaMA 3.2 to generate embeddings for text documents and store them in PostgreSQL."
+    },
+    {
+      "link": "/examples/intermediate-application",
+      "id": "intermediate-rag-example",
+      "name": "Retrieval Augmented Generation with VectorizeJS",
+      "description": "An intermediate-level application showcasing how to build a RAG system using VectorizeJS, Ollama/LLaMA 3.2, and PostgreSQL."
+    },
+    {
+      "link": "/examples/advanced-application",
+      "id": "advanced-agentic-rag-example",
+      "name": "Agentic RAG with VectorizeJS and langgraph",
+      "description": "An advanced-level application demonstrating how to build an agent-based RAG system using VectorizeJS, langgraph, Ollama/LLaMA 3.2, and PostgreSQL."
+    }
+  ]
+  
