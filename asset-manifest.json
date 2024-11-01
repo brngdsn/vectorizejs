@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/vectorizejs/static/css/main.f67061cc.css",
-    "main.js": "/vectorizejs/static/js/main.f6d5f342.js",
+    "main.css": "/vectorizejs/static/css/main.f1ea1de1.css",
+    "main.js": "/vectorizejs/static/js/main.ec37be18.js",
     "static/js/453.9b41687b.chunk.js": "/vectorizejs/static/js/453.9b41687b.chunk.js",
     "static/media/fa-solid-900.ttf": "/vectorizejs/static/media/fa-solid-900.07ed6d5fa32c1d54af0f.ttf",
     "static/media/fa-brands-400.ttf": "/vectorizejs/static/media/fa-brands-400.0ff70dcbf135d859ebf3.ttf",
@@ -13,12 +13,12 @@
     "static/media/fa-v4compatibility.woff2": "/vectorizejs/static/media/fa-v4compatibility.6cfec8414be20e2c3426.woff2",
     "static/media/logo.svg": "/vectorizejs/static/media/logo.74672798577ba08a8bb7370403e2e425.svg",
     "index.html": "/vectorizejs/index.html",
-    "main.f67061cc.css.map": "/vectorizejs/static/css/main.f67061cc.css.map",
-    "main.f6d5f342.js.map": "/vectorizejs/static/js/main.f6d5f342.js.map",
+    "main.f1ea1de1.css.map": "/vectorizejs/static/css/main.f1ea1de1.css.map",
+    "main.ec37be18.js.map": "/vectorizejs/static/js/main.ec37be18.js.map",
     "453.9b41687b.chunk.js.map": "/vectorizejs/static/js/453.9b41687b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f67061cc.css",
-    "static/js/main.f6d5f342.js"
+    "static/css/main.f1ea1de1.css",
+    "static/js/main.ec37be18.js"
   ]
 }
